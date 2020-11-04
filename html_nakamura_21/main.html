@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>About Cheese</title>
+
+      <script src="./js/three.min.js"></script>
+      <script src="./js/jquery.min.js"></script>
+
+      <script src="./js/gio.min.js"></script>
+
+      <link rel="stylesheet" href="./css/common.css">
+      <link rel="icon" href="./favicon.ico" />
+
+      <style>
+
+          #globalArea {
+
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+
+          }
+
+          #infoBoard {
+
+              position: absolute;
+              left: 35%;
+              top: 40%;
+              width: 400px;
+              height: 100px;
+              line-height: 50px;
+              text-align: center;
+              color: white;
+              font-size: 20px;
+              background-color: rgba(106, 107, 111, 0.6);
+              display: none;
+
+          }
+
+          #countryArea {
+
+              width: 100%;
+              height: 50%;
+
+          }
+
+          #explanation {
+
+              width: 100%;
+              height: 50%;
+              font-size: 16px;
+
+          }
+
+          #import, #consumption {
+
+            position: absolute;
+            left: 100px;
+            width: 150px;
+            height: 40px;
+            color: #cbcbcb;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            user-select: none;
+            box-sizing: border-box;
+            transition: 1s;
+            border-radius: 5px;
+            background-color: rgba(110, 110, 110, 0.8);
+
+          }
+
+          #import:hover, #consumption:hover {
+
+            color: #fff;
+            background-color: #929292;
+
+          }
+
+          #import {
+            top: 200px;
+          }
+
+          #consumption {
+            top: 300px;
+          }
+      </style>
+  </head>
+  <body>
+    <div id="globalArea"></div>
+
+    <div id="import">輸入量ランキング</div>
+    <div id="consumption">消費量ランキング</div>
+
+    <div id="infoBoard">
+      <div id="countryArea"></div>
+      <div id="explanation"></div>
+    </div>
+
+    <script>
+      var container = document.getElementById( "globalArea" );
+      var configs = {
+        "control": {
+          "stats": false,
+          "disableUnmentioned": false,
+          "lightenMentioned": false,
+          "inOnly": false,
+          "outOnly": false,
+          "initCountry": "CN",
+          "halo": true,
+          "transparentBackground": false,
+          "autoRotation": false,
+          "rotationRatio": 1
+        },
+        "color": {
+          "surface": 11577751,
+          "selected": 13092719,
+          "in": 16777215,
+          "out": 669255,
+          "halo": 2141154,
+          "background": 4671303
+        },
+        "brightness": {
+          "ocean": 1,
+          "mentioned": 0.19,
+          "related": 0.41
+        }
+      }
+      var controller = new GIO.Controller( container, configs );
+      var import_flg = true;
+      
+      // データセットに存在する国を明るく表示
+      controller.lightenMentioned(true);
+      // データセットに存在しない国を選べなくした
+      controller.disableUnmentioned(true);
+      // 初期選択国
+      controller.setInitCountry("JP");
+
+      $( "#import" ).click( function () {
+        controller.switchDataSet("import");
+        import_flg = true
+      } );
+
+      $( "#consumption" ).click( function () {
+        controller.switchDataSet("consumption");
+        import_flg = false
+      } );
+
+      // use the onCountryPicked() to set callback when clicked country changed
+    
+      controller.onCountryPicked( callback );
+
+      // the callback function can get parameter contains some country data, the detailed of the parameter can be found in the API document
+
+      function callback ( selectedCountry, flg ) {
+        if ( import_flg ) {
+          if ( selectedCountry.ISOCode == "AU" ) {
+            $( "#countryArea" ).text( '1位：オーストラリア' );
+            $( "#explanation" ).text( '日本への輸出量：82,935(t)  2018年' );
+          } else if ( selectedCountry.ISOCode == "NZ" ) {
+            $( "#countryArea" ).text( '2位：ニュージーランド' );
+            $( "#explanation" ).text( '日本への輸出量：62,214(t)  2018年' );
+          } else if ( selectedCountry.ISOCode == "US" ) {
+            $( "#countryArea" ).text( '3位：アメリカ合衆国' );
+            $( "#explanation" ).text( '日本への輸出量：32,944(t)  2018年' );
+          } else if ( selectedCountry.ISOCode == "NZ" ) {
+            $( "#countryArea" ).text( '4位：オランダ' );
+            $( "#explanation" ).text( '日本への輸出量：30,069(t)  2018年' );
+          } else if ( selectedCountry.ISOCode == "DE" ) {
+            $( "#countryArea" ).text( '5位：ドイツ' );
+            $( "#explanation" ).text( '日本への輸出量：18,167(t)  2018年' );
+          } else if ( selectedCountry.ISOCode == "JP" ) {
+            $( "#countryArea" ).text( '日本' );
+            $( "#explanation" ).text( '総輸入量：276,177(t)  2018年' ); 
+          }
+        } else {
+          if ( selectedCountry.ISOCode == "DK" ) {
+            $( "#countryArea" ).text( '1位：デンマーク' );
+            $( "#explanation" ).text( '国民1人あたりの年間消費量：28.9kg  2019年' );
+          } else if ( selectedCountry.ISOCode == "FR" ) {
+            $( "#countryArea" ).text( '2位：フランス' );
+            $( "#explanation" ).text( '国民1人あたりの年間消費量：26.5kg  2019年' );
+          } else if ( selectedCountry.ISOCode == "LU" ) {
+            $( "#countryArea" ).text( '2位：ルクセンブルク' );
+            $( "#explanation" ).text( '国民1人あたりの年間消費量：26.5kg  2019年' );
+          } else if ( selectedCountry.ISOCode == "IS" ) {
+            $( "#countryArea" ).text( '4位：アイスランド' );
+            $( "#explanation" ).text( '国民1人あたりの年間消費量：28.9kg  2019年' );
+          } else if ( selectedCountry.ISOCode == "CY" ) {
+            $( "#countryArea" ).text( '5位：キプロス' );
+            $( "#explanation" ).text( '国民1人あたりの年間消費量：28.9kg  2019年' );
+          } else if ( selectedCountry.ISOCode == "JP" ) {
+            $( "#countryArea" ).text( '日本' );
+            $( "#explanation" ).text( '国民1人あたりの年間消費量：2.84kg  2019年' ); 
+          } 
+        }
+
+        $( "#infoBoard" ).fadeIn( 1000 );
+
+        setTimeout( function () {
+          $( "#infoBoard" ).fadeOut( 1000 );
+        }, 3000 );
+
+      }
+
+      $.ajax( {
+        url: "./data/groupData.json",
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        async: true,
+        dataType: "json",
+        success: function ( inputData ) {
+          controller.addData( inputData );
+          controller.init();
+        }
+
+      } );
+    </script>
+  </body>
+</html>

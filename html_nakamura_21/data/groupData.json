@@ -1,0 +1,18 @@
+{
+	"dataSetKeys": ["import", "consumption"],
+	"initDataSet": "import",
+	"import": [
+    {"e":"AU","i":"JP","v":1},
+    {"e":"NZ","i":"JP","v":1},
+    {"e":"US","i":"JP","v":1},
+    {"e":"NL","i":"JP","v":1},
+    {"e":"DE","i":"JP","v":1}
+  ],
+  "consumption": [
+    {"e":"DK","i":"JP","v":1},
+    {"e":"FR","i":"JP","v":1},
+    {"e":"LU","i":"JP","v":1},
+    {"e":"IS","i":"JP","v":1},
+    {"e":"CY","i":"JP","v":1}
+  ]
+}
